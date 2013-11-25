@@ -504,6 +504,12 @@ COMMENTS_ALLOW_PROFANITIES = False
 PROFANITIES_LIST = ()
 
 ##################
+# SITES #
+##################
+
+SITE_MODEL = 'sites.Site'
+
+##################
 # AUTHENTICATION #
 ##################
 

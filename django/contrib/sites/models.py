@@ -57,22 +57,41 @@ class SiteManager(models.Manager):
 
 
 @python_2_unicode_compatible
-class Site(models.Model):
-
+class AbstractBaseSite(models.Model):
+    """
+    This is the bare minimum that a site should have
+    """
     domain = models.CharField(_('domain name'), max_length=100,
         validators=[_simple_domain_name_validator])
     name = models.CharField(_('display name'), max_length=50)
-    objects = SiteManager()
 
-    class Meta:
-        db_table = 'django_site'
-        verbose_name = _('site')
-        verbose_name_plural = _('sites')
-        ordering = ('domain',)
+    objects = SiteManager()
 
     def __str__(self):
         return self.domain
 
+    class Meta:
+        abstract = True
+
+class AbstractSite(AbstractBaseSite):
+    """
+    An abstract base class to allow for the customization of the
+    sites model used to create site through inheritance of this model
+    """
+
+    # class Meta(AbstractBaseSite.Meta):
+    #     db_table = 'django_site'
+    #     verbose_name = _('site')
+    #     verbose_name_plural = _('sites')
+    #     ordering = ('domain',)
+
+class Site(AbstractSite):
+    """
+    Sites using the default 'django.contrib.sites' are represented by this model
+    domain and name are required.
+    """
+    class Meta(AbstractSite.Meta):
+        swappable = 'SITE_MODEL'
 
 @python_2_unicode_compatible
 class RequestSite(object):
