@@ -23,7 +23,7 @@ def get_site_model():
     app_label, model_name = format_app_model('SITE_MODEL')
     site_model = get_model(app_label, model_name)
     if site_model is None:
-        raise ImproperlyConfigured("SITE_MODEL refers to model '%s' that has not been installed" % settings.SITE_MODEL)
+        raise ImproperlyConfigured("SITE_MODEL refers to model '%s' that has not been installed" % settings.AUTH_USER_MODEL)
     return site_model
 
 def get_site_app():
